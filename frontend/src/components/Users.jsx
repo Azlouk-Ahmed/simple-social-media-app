@@ -3,15 +3,20 @@ import { useEffect } from 'react';
 import Loading from './Loading';
 import { useUsersContext } from '../hooks/useUsersContext';
 import UserDetails from './UserDetails';
+import { useAuthContext } from '../hooks/useAuthContext';
 
     
     function Users() {
       const { users, dispatch } = useUsersContext();
-
+      const { user } = useAuthContext();
       useEffect(() => {
         const fetchUsers = async () => {
 
-          const response = await fetch("api/user/users");
+          const response = await fetch("api/user/users",{
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          });
           const json = await response.json();
           dispatch({type: "SET_USERS", payload: json})
   

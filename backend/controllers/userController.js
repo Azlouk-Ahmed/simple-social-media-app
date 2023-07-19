@@ -32,8 +32,9 @@ const signupUser = async (req, res) => {
 }
 
 const getAllUsers = async (req, res) => {
+    const user_id = req.user._id;
     try {
-        const users = await User.find({}).sort( {name : 1});
+        const users = await User.find({ _id: { $ne: user_id } }).sort( {name : 1});
         res.status(200).json(users)
     } catch (error) {
         res.status(200).json({error: error.message})
@@ -80,14 +81,15 @@ const userPosts = async (req, res) => {
 
 // get follower of a user 
 const getFollowers = async (req, res) => {
-    const userId = req.params.id; // Assuming you pass the user ID as a parameter in the URL
+    const userId = req.params.id;
+    const user_id = req.user._id; 
   try {
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
     const followerIds = user.followers;
-    const users = await User.find({ _id: { $in: followerIds } });
+    const users = await User.find({ _id: { $in: followerIds, $ne: user_id } });
     res.json(users);
   } catch (error) {
     console.error(error);

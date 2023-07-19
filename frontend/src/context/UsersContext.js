@@ -8,6 +8,11 @@ export const usersReducer = (state,action) => {
             users : action.payload
         }
     } 
+    else if(action.type === "SET_USERS_PROFILE"){
+        return {
+          profileFollowers : action.payload
+        }
+    } 
     else if (action.type === "FOLLOW_USER") {
         return {
             users: state.users.map((user) =>
@@ -25,6 +30,7 @@ export const usersReducer = (state,action) => {
 export const UsersContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(usersReducer, {
       users: null,
+      profileFollowers: null
     });
     console.log(state);
     return (

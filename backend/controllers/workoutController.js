@@ -1,18 +1,18 @@
-const Workout = require('../models/workoutModel')
+const Post = require('../models/workoutModel')
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId;
 
-// get user workouts
-const getUserWorkouts = async (req, res) => {
+// get user posts
+const getUserposts = async (req, res) => {
   const user_id = req.user._id;
   //console.log(user_id);
-  const workouts = await Workout.find({user_id}).sort({createdAt: -1})
+  const posts = await Post.find({user_id}).sort({createdAt: -1})
 
-  res.status(200).json(workouts)
+  res.status(200).json(posts)
 }
-// get all workouts
-const getAllWorkouts = async (req, res) => {
-  const workouts = await Workout.aggregate([
+// get all posts
+const getAllposts = async (req, res) => {
+  const posts = await Post.aggregate([
     {
       $addFields: {
         user_id: {
@@ -30,30 +30,30 @@ const getAllWorkouts = async (req, res) => {
     }
   ]).sort({ createdAt: -1 });
 
-  res.status(200).json(workouts);
+  res.status(200).json(posts);
 };
 
 
-// get a single workout
-const getWorkout = async (req, res) => {
+// get a single Post
+const getPost = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such workout'})
+    return res.status(404).json({error: 'No such Post'})
   }
 
-  const workout = await Workout.findById(id)
+  const Post = await Post.findById(id)
 
-  if (!workout) {
-    return res.status(404).json({error: 'No such workout'})
+  if (!Post) {
+    return res.status(404).json({error: 'No such Post'})
   }
 
-  res.status(200).json(workout)
+  res.status(200).json(Post)
 }
 
-// create a new workout
-const createWorkout = async (req, res) => {
-  const { title, load, reps } = req.body;
+// create a new Post
+const createPost = async (req, res) => {
+  const { description, title, image } = req.body;
   const user_id = req.user._id;
 
   let emptyFields = [];
@@ -61,22 +61,19 @@ const createWorkout = async (req, res) => {
   if (!title) {
     emptyFields.push('title');
   }
-  if (!load) {
-    emptyFields.push('load');
-  }
-  if (!reps) {
-    emptyFields.push('reps');
+  if (!description) {
+    emptyFields.push('description');
   }
   if (emptyFields.length > 0) {
     return res.status(400).json({ error: 'Please fill in all fields', emptyFields });
   }
 
   try {
-    const workout = await Workout.create({ title, load, reps, user_id });
+    const newPost = await Post.create({ title, description, image, user_id });
 
-    const result = await Workout.aggregate([
+    const result = await Post.aggregate([
       {
-        $match: { _id: workout._id }
+        $match: { _id: newPost._id }
       },
       {
         $addFields: {
@@ -102,63 +99,62 @@ const createWorkout = async (req, res) => {
 };
 
 
-// delete a workout
-const deleteWorkout = async (req, res) => {
+// delete a Post
+const deletePost = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({error: 'No such workout'})
+    return res.status(400).json({error: 'No such Post'})
   }
 
-  const workout = await Workout.findOneAndDelete({_id: id})
+  const Post = await Post.findOneAndDelete({_id: id})
 
-  if(!workout) {
-    return res.status(400).json({error: 'No such workout'})
+  if(!Post) {
+    return res.status(400).json({error: 'No such Post'})
   }
 
-  res.status(200).json(workout)
+  res.status(200).json(Post)
 }
 
-// update a workout
-const updateWorkout = async (req, res) => {
+// update a Post
+const updatePost = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({error: 'No such workout'})
+    return res.status(400).json({error: 'No such Post'})
   }
 
-  const workout = await Workout.findOneAndUpdate({_id: id}, {
+  const Post = await Post.findOneAndUpdate({_id: id}, {
     ...req.body
   })
 
-  if (!workout) {
-    return res.status(400).json({error: 'No such workout'})
+  if (!Post) {
+    return res.status(400).json({error: 'No such Post'})
   }
 
-  res.status(200).json(workout)
+  res.status(200).json(Post)
 }
 
-// like dislike workout
-const likeWorkout = async (req, res) => {
+// like dislike Post
+const likePost = async (req, res) => {
   const id = req.params.id;
   const userId = req.user._id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'No such workout' });
+    return res.status(400).json({ error: 'No such Post' });
   }
 
   try {
-    const workout = await Workout.findById({ _id: id });
-
-    if (workout.likes.includes(userId)) {
-      await workout.updateOne({ $pull: { likes: userId } });
+    const likePost = await Post.findById({ _id: id });
+    if (likePost.likes.includes(userId)) {
+      await likePost.updateOne({ $pull: { likes: userId } });
     } else {
-      await workout.updateOne({ $push: { likes: userId } });
+      await likePost.updateOne({ $push: { likes: userId } });
     }
-
-    const result = await Workout.aggregate([
+    
+    const result = await Post.aggregate([
       {
-        $match: { _id: workout._id }
+        $match: { _id: likePost._id }
       },
       {
         $addFields: {
@@ -176,10 +172,9 @@ const likeWorkout = async (req, res) => {
         }
       }
     ]);
+    const updatedPost = result[0];
 
-    const updatedWorkout = result[0];
-
-    res.status(200).json(updatedWorkout);
+    res.status(200).json(updatedPost);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -187,11 +182,11 @@ const likeWorkout = async (req, res) => {
 
 
 module.exports = {
-  getAllWorkouts,
-  getUserWorkouts,
-  getWorkout,
-  createWorkout,
-  deleteWorkout,
-  updateWorkout,
-  likeWorkout
+  getAllposts,
+  getUserposts,
+  getPost,
+  createPost,
+  deletePost,
+  updatePost,
+  likePost
 }

@@ -9,12 +9,12 @@ rout.post("/login", loginUser);
 
 rout.post("/signup", signupUser);
 
-rout.get("/users", getAllUsers);
+rout.get("/users",requireAuth, getAllUsers);
 
 rout.put("/follow/:id",requireAuth, followUser);
 
 rout.get("/profile/:id", userPosts);
 
-rout.get("/followers/:id", getFollowers);
+rout.get("/followers/:id",requireAuth, getFollowers);
 
 module.exports = rout

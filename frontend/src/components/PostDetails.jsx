@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import Loading from './Loading';
 
 function PostDetails({workout}) {
   const { user } = useAuthContext();
@@ -9,19 +10,6 @@ function PostDetails({workout}) {
   const [loading, setloading] = useState(null)
   const [delloading, setdelloading] = useState(null)
 
-  const handleClick = async () => {
-    setdelloading("active")
-    const response = await fetch('/api/workouts/' + workout._id, {
-      method: 'DELETE',
-      headers : {'authorization' : `Bearer ${user.token}`}
-    })
-    const json = await response.json()
-    
-    if (response.ok) {
-      dispatch({type: 'DELETE_WORKOUT', payload: json})
-      setdelloading(null)
-    }
-  }
   const isLiked = workout.likes.includes(user.user._id);
 
   const handleLike = async () => {
@@ -49,21 +37,12 @@ function PostDetails({workout}) {
       </div>
       <div className='workout-content'>
         <h4>{workout.title}</h4>
-        <p><strong>Load (kg): </strong>{workout.load}</p>
-        <p><strong>Number of reps: </strong>{workout.reps}</p>
+        <p>desc {workout.description}</p>
+        <p>img{workout.image}</p>
       </div>
-      {delloading ? (
-          <div className="loading material-symbols-outlined del">
-            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          </div>
-      ) : (
-        <span className="material-symbols-outlined del" onClick={handleClick}>delete</span>
-      )}
       <pre className='likes'> 
         {loading ? (
-          <div className="loading">
-            <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-          </div>
+          Loading
         ) : (
           <>
             {isLiked ? (

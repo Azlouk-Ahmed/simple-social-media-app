@@ -7,42 +7,54 @@ import PostDetails from '../components/PostDetails';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 import ProfileFollowers from '../components/ProfileFollowers';
 import { useUsersContext } from '../hooks/useUsersContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 function Profile() {
     
     const {id} = useParams();
-    const [user, setuser] = useState(null);
+    const [profile, setProfile] = useState(null);
     const { profileWorkouts, dispatch } = useWorkoutsContext();
     const { dispatch : userDispatch } = useUsersContext();
+    const { user } = useAuthContext();
+    
+
+    
     
     useEffect(() => {
-        axios.get("http://localhost:4000/api/user/followers/"+id)
-        .then(response => {
-                userDispatch({type: "SET_USERS", payload: response.data})
-                console.log("dispatched");
-            })
-            .catch(error => {
-              console.log(error);
+        // Fetching the user's followers
+        axios.get(`http://localhost:4000/api/user/followers/${id}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
         })
-        const getuser = async (id) => {
-            axios.get("http://localhost:4000/api/user/profile/"+id)
           .then(response => {
-            setuser(response.data)
-
-           dispatch({type: 'SET_PROFILE_WORKOUTS', payload: response.data.posts});
-           //console.log(response.data.posts );
+            userDispatch({type: "SET_USERS_PROFILE", payload: response.data})
+            console.log("dispatched");
+            console.log();
           })
           .catch(error => {
             console.log(error);
-          })
-        }
-    getuser(id);
+          });
       
-    }, [id, dispatch, userDispatch])
+        // Fetching the user's profile
+        const getuser = async (id) => {
+          axios.get(`http://localhost:4000/api/user/profile/${id}`)
+            .then(response => {
+              setProfile(response.data);
+              dispatch({ type: 'SET_PROFILE_WORKOUTS', payload: response.data.posts });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        };
+      
+        getuser(id);
+      
+      }, [id, dispatch, user]);
 
   return (
     <div>
-        {(user) ? (
+        {(profile) ? (
             <div className="user-profile">
                 <div className="profile-img">
                     <img src="/img/cover.jpg" className='cover' alt="" srcSet="" />

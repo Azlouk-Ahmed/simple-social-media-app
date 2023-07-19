@@ -72,12 +72,18 @@ header a {
   background: #fff;
   border-radius: 4px;
   margin: 20px auto;
-  padding: 20px;
+  padding: 20px 20px 40px;
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.small--loading {
+  width: 1rem !important;
+  height: 1rem !important;
+  
 }
 .workout-details h4 {
   margin: 7px 0px 7px 0;
@@ -94,6 +100,18 @@ header a {
   top: 20px;
   right: 20px;
   cursor: pointer;
+}
+
+.post-image-holder {
+  max-width: 32rem;
+  max-height: 16rem;
+  overflow: hidden;
+}
+
+.post-img {
+  width: 100%;
+  height: 16rem;
+  object-fit: cover;
 }
 
 .likes {
@@ -269,6 +287,16 @@ form.signup, form.login {
   align-items: center;
 
 }
+
+.post--form {
+  margin: 1rem auto;
+  padding: 1rem;
+}
+
+.post--form p {
+
+}
+
 
 .input--image p {
   color: black;

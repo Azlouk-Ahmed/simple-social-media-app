@@ -1,26 +1,28 @@
 import { useState } from 'react'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import Loading from './Loading'
+import { IoMdAdd } from "react-icons/io";
+import { CiImageOn } from "react-icons/ci";
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutsContext()
   const { user } = useAuthContext();
 
   const [title, setTitle] = useState('')
-  const [load, setLoad] = useState('')
-  const [reps, setReps] = useState('')
+  const [description, setDescription] = useState('')
+  const [imagePath, setImagePath] = useState("");
   const [loading, setloading] = useState(null)
   const [error, setError] = useState(null)
   const [emptyFields, setEmptyFields] = useState([])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    const workout = {title, load, reps}
+    const post = {title, description, image : imagePath}
     setloading("active");
-    const response = await fetch('/api/workouts', {
+    const response = await fetch('/api/posts', {
       method: 'POST',
-      body: JSON.stringify(workout),
+      body: JSON.stringify(post),
       headers: {
         'Content-Type': 'application/json',
         'authorization' : `Bearer ${user.token}`
@@ -31,13 +33,14 @@ const WorkoutForm = () => {
     if (!response.ok) {
       setError(json.error)
       setEmptyFields(json.emptyFields)
+      setloading(null)
     }
     if (response.ok) {
       setEmptyFields([])
       setError(null)
       setTitle('')
-      setLoad('')
-      setReps('')
+      setDescription('')
+      setImagePath('')
       setloading(null)
       dispatch({type: 'CREATE_WORKOUT', payload: json})
 
@@ -47,9 +50,9 @@ const WorkoutForm = () => {
 
   return (
     <form className="create" onSubmit={handleSubmit}> 
-      <h3>Add a New Workout</h3>
+      <h3>Add a New Post</h3>
 
-      <label>Excersize Title:</label>
+      <label>Post Title:</label>
       <input 
         type="text" 
         onChange={(e) => setTitle(e.target.value)} 
@@ -57,25 +60,31 @@ const WorkoutForm = () => {
         className={emptyFields.includes('title') ? 'error' : ''}
       />
 
-      <label>Load (in kg):</label>
+      <label>Description:</label>
       <input 
-        type="number" 
-        onChange={(e) => setLoad(e.target.value)} 
-        value={load}
-        className={emptyFields.includes('load') ? 'error' : ''}
+        type="text" 
+        onChange={(e) => setDescription(e.target.value)} 
+        value={description}
+        className={emptyFields.includes('description') ? 'error' : ''}
       />
 
-      <label>Number of Reps:</label>
-      <input 
-        type="number" 
-        onChange={(e) => setReps(e.target.value)} 
-        value={reps}
-        className={emptyFields.includes('reps') ? 'error' : ''}
-      />
+      <label>image:</label>
+        <label className="input--image post--form" htmlFor="inputTag">
+            <IoMdAdd className="plus--icon icon" />
+            <span>
+              <CiImageOn className="icon" />
+            </span>
+            <input
+              type="file"
+              className='input--image'
+              id="inputTag"
+              accept="image/png, image/jpg, image/gif, image/jpeg"
+              onChange={(e) => {const file = e.target.files[0];setImagePath("/img/" + file.name); }}
+            />
+            <p>{imagePath.slice(5)}</p>
+      </label>
         {loading ? (
-            <div className="loading ">
-              <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
-            </div>
+            <Loading />
         ) : (
           <button>Add Workout</button>
         )}
