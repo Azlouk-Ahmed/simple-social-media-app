@@ -6,7 +6,7 @@ export const useUsersContext = () => {
   
 
   if(!context) {
-    throw Error('useUsersContext must be used inside a WorkoutsContextProvider')
+    throw Error('useUsersContext must be used inside a UseUsersContextProvider')
   }
 
 
