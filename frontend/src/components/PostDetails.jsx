@@ -3,8 +3,9 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import Loading from './Loading';
+import axios from 'axios';
 
-function PostDetails({workout}) {
+function PostDetails({workout,currentUser}) {
   const { user } = useAuthContext();
   const { dispatch } = useWorkoutsContext()
   const [loading, setloading] = useState(null)
@@ -14,16 +15,51 @@ function PostDetails({workout}) {
 
   const handleLike = async () => {
     setloading("active");
-    const response = await fetch("/api/workouts/like/"+ workout._id, {
-      method: 'PUT',
-      headers : {'authorization' : `Bearer ${user.token}`}
-    })
-    const json = await response.json()
-    if (response.ok) {
-      dispatch({type: 'UPDATING_PROFILE_LIKE_COUNT', payload: json})
-      setloading(null)
+  
+    try {
+      const response = await axios.put(`http://localhost:4000/api/posts/like/${workout._id}`, null, {
+        headers: {
+          'authorization': `Bearer ${user.token}`
+        }
+      });
+  
+      if (response.status === 200) {
+        dispatch({ type: 'UPDATING_PROFILE_LIKE_COUNT', payload: response.data });
+        setloading(null);
+      } else {
+        console.error('Request failed with status code:', response.status);
+        console.error('Response data:', response.data);
+        setloading(null);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setloading(null);
     }
+  };
+
+
+const handleClick = async () => {
+  if (!user) {
+    return;
   }
+
+  try {
+    const response = await axios.delete(`http://localhost:4000/api/posts/${workout._id}`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      dispatch({ type: 'DEL_PROFILE_WORKOUT', payload: response.data });
+    }
+  } catch (error) {
+    // Handle errors here
+    console.error('Error:', error);
+  }
+};
+
+  
   return (
     <div className="workout-details">
       <div className="user-info">
@@ -35,14 +71,16 @@ function PostDetails({workout}) {
           </div>
         </div>
       </div>
-      <div className='workout-content'>
+      <div className="workout-content">
         <h4>{workout.title}</h4>
-        <p>desc {workout.description}</p>
-        <p>img{workout.image}</p>
+        <p>{workout.description}</p>
+        <div className="post-image-holder">
+          <img className="post-img" src={workout.image} alt="" />
+        </div>
       </div>
-      <pre className='likes'> 
+      {!currentUser && (<pre className='likes'> 
         {loading ? (
-          Loading
+          <span>loading ... </span>
         ) : (
           <>
             {isLiked ? (
@@ -53,7 +91,10 @@ function PostDetails({workout}) {
             <span>{workout.likes.length}</span>
           </>
         )}
-      </pre>
+      </pre>)}
+      {currentUser && (
+        <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
+      )}
     </div>
   )
 }

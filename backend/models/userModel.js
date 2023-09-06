@@ -25,10 +25,22 @@ const userSchema = new Schema({
     img : {
         type : String,
     },
+    coverImg : {
+        type : String,
+    },
+    bio : {
+        type : String,
+    },
+    country : {
+        type : String,
+    },
+    education : {
+        type : String,
+    },
     followers : []
-})
+}, { timestamps: true })
 
-userSchema.statics.signup = async function(email, password, name, surname, img){
+userSchema.statics.signup = async function(email, password, name, surname, img ){
     if(!email || !password) {
         throw Error("email or password cannot be empty !")
     }

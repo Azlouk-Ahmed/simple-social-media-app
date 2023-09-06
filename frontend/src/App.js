@@ -8,6 +8,8 @@ import Signup from './pages/Signup';
 import { useAuthContext } from './hooks/useAuthContext';
 import { useEffect } from 'react';
 import Profile from './pages/Profile';
+import UserProfile from './pages/UserProfile';
+import EditProfile from './pages/EditProfile';
 
 
 function App() {
@@ -39,8 +41,10 @@ function App() {
             <Route 
               path="/signup" 
               element={!user? <Signup /> : <Navigate to="/" />} 
-            />
+              />
             <Route path="/profile/:id" element={<Profile />}/>
+            <Route path="/profile" element={user? <UserProfile /> : <Navigate to="/login" />}/>
+            <Route path='/profile/edit' element ={ <EditProfile />} />
           </Routes>
         </div>
       </BrowserRouter>

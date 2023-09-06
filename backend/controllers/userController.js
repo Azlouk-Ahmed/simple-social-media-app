@@ -21,7 +21,6 @@ const loginUser = async (req, res) => {
 
 const signupUser = async (req, res) => {
     const {email, password, name, surname, img} = req.body;
-    console.log(email, password, name, surname, img);
     try {
         const user = await User.signup(email, password, name, surname, img)
         const token = generateToken(user._id)
@@ -30,6 +29,7 @@ const signupUser = async (req, res) => {
         res.status(400).json({error: error.message})
     }
 }
+
 
 const getAllUsers = async (req, res) => {
     const user_id = req.user._id;
@@ -97,4 +97,16 @@ const getFollowers = async (req, res) => {
   }
 };
 
-module.exports = {loginUser, signupUser, getAllUsers, followUser, userPosts, getFollowers};
+//update user info 
+const updateCurrentUser = async (req, res) => {
+    const user_id = req.user._id;
+    const currentUser = await User.findOneAndUpdate({_id: user_id}, {
+        ...req.body
+    }, { new: true });
+    if(!currentUser) {
+        return res.status(404).json({error : "Error udating user"})
+    }
+    return res.status(200).json(currentUser);
+}
+
+module.exports = {updateCurrentUser, loginUser, signupUser, getAllUsers, followUser, userPosts, getFollowers};

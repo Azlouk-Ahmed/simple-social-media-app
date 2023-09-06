@@ -16,7 +16,7 @@ router.use(requireAuth)
 // GET all posts
 router.get('/', getAllposts)
 
-// GET all posts
+// GET all user posts
 router.get('/user', getUserposts)
 
 // GET a single post

@@ -5,7 +5,6 @@ import { AiOutlineLike, AiFillLike } from "react-icons/ai"
 
 // date fns
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import Loading from "./Loading";
 
 const WorkoutDetails = ({ workout }) => {
   const { user } = useAuthContext();
@@ -34,7 +33,7 @@ const WorkoutDetails = ({ workout }) => {
           <img
             src={
               workout.user[0].img
-                ? `${workout.user[0].img}`
+                ? `/img/${workout.user[0].img}`
                 : `/img/default.png`
             }
             alt=""

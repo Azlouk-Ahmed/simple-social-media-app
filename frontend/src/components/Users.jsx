@@ -22,7 +22,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
   
         }
         fetchUsers(); 
-      }, [dispatch])
+      }, [dispatch, user.token])
       return (
         <div className="users-container">
           {users ? (

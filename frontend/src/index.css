@@ -192,6 +192,8 @@ nav {
 }
 nav a, nav button {
   margin-left: 10px;
+  display: grid;
+  place-items: center;
 }
 nav button,.secondary-btn {
   background: #fff;
@@ -388,16 +390,13 @@ form.signup, form.login {
 }
 
 .profile-img .cover {
+  height: 55vh;
   width: 100%;
 }
 
 .profile-img .profile-img-wrapper {
   overflow: hidden;
-  position: absolute;
-  bottom: 0;
-  left: 14%;
-  transform: translate(-56%, 34%);
-  border: var(--primary) 4px solid;
+  border: #f1f1f1 4px solid;
   border-radius: 50%;
   width: 10rem;
   height: 10rem;
@@ -413,6 +412,24 @@ form.signup, form.login {
   display: flex;
   flex-direction: column;
   gap: 4rem;
+  padding: 0 6rem;
+  align-items: center;
+}
+
+.user-profile >div {
+  width: 80%;
+  height: 74vh;
+}
+
+.workout-details span {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  background: #f1f1f1;
+  padding: 6px;
+  border-radius: 50%;
+  color: #333;
 }
 
 .user-profile .infor{
@@ -429,6 +446,90 @@ form.signup, form.login {
   background: white;
   padding: 1rem;
   width: fit-content;
+}
+
+.userprofile {
+  padding: 0 10rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.current-user-info {
+  width: 70%;
+  overflow: hidden;
+  height: 38rem;
+  margin: 0 auto;
+}
+
+.current-user-images {
+  position: relative;
+  height: 100%;
+}
+
+.current-user-images .cover {
+  position: absolute;
+  width: 100%;
+  height: 15rem;
+}
+
+.current-user-images .cover img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.current-profile-image {
+  border: 4px white solid;
+  border-radius: 100%;
+  width: 150px;
+  height: 150px;
+}
+
+.current-profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  border: 3px solid var(--primary);
+  border-radius: 100%;
+}
+
+.current-user {
+  bottom: 0rem;
+  left: 2rem;
+  display: flex;
+  position: absolute;
+  gap: 1rem;
+  align-items: center;
+}
+
+.current-user-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-user-name {
+  text-transform: capitalize;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.current-user-data span:not(:nth-child(1)) {
+  color: #777;
+  font-size: 13px;
+}
+
+.bio {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  min-height: 7rem;
+}
+
+.bio .author {
+  bottom: 0;
+  right: 12rem;
+  position: absolute;
 }
 
 

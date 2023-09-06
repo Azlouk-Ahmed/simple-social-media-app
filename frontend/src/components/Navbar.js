@@ -21,7 +21,9 @@ const Navbar = () => {
             <div className='nav'>
               <div className='nav-user'>
                 <img src={(user.user.img) ?`/img/${user.user.img}` : `/img/default.png`} alt="profile img" />
-                <span> {user.user.name} {user.user.surname}</span>
+                <Link to='profile'>
+                  <span> {user.user.name} {user.user.surname}</span>
+                </Link>
               </div>
               <button onClick={handleClick}>Log out</button>
             </div>

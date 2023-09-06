@@ -107,13 +107,13 @@ const deletePost = async (req, res) => {
     return res.status(400).json({error: 'No such Post'})
   }
 
-  const Post = await Post.findOneAndDelete({_id: id})
+  const postToDel = await Post.findOneAndDelete({_id: id})
 
-  if(!Post) {
+  if(!postToDel) {
     return res.status(400).json({error: 'No such Post'})
   }
 
-  res.status(200).json(Post)
+  res.status(200).json(postToDel)
 }
 
 // update a Post
