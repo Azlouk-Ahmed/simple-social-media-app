@@ -70,12 +70,18 @@ function Profile() {
                         <span>{profile.user.followers.length} followers 
                         {`${profile.user.createdAt ? `joined ${formatDistanceToNow(new Date(profile.user.createdAt), { addSuffix: true })}` : ''}`}
                         </span>
-                        <span>lives in {profile.country}</span>
-                        <span>studies at {profile.education}</span>
+                        <span>lives in {profile.user.country}</span>
+                        <span>studies at {profile.user.education}</span>
                       </div>
 
                     </div>
                 </div>
+                    <div className="bio">
+                              <span>
+                      {`${profile.user.bio ? profile.user.bio : "this user is currently has no bio"}`}
+                    </span>
+                    <div className="author">~ {profile.user.name}</div>
+                    </div>
                 <div className="profile">
                     <ProfileFollowers id = {id} />
                     <div className="workouts">

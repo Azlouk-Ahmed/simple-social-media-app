@@ -31,11 +31,11 @@ function Currentuserposts() {
   }, [dispatch, user]);
   return (
     <div className="curent-user-posts">
-        {
-            currentUserPosts ? currentUserPosts.map(post => (
+        {currentUserPosts && 
+            currentUserPosts.length > 0 ? currentUserPosts.map(post => (
                 <PostDetails workout={{...post,user : [user.user]}} key={post._id} currentUser= {true} />
             )) : (
-                <div>fetching data ...</div>
+                <div>you haven't post anything yet ...</div>
             )
         }
     </div>

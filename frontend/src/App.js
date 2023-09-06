@@ -44,7 +44,7 @@ function App() {
               />
             <Route path="/profile/:id" element={<Profile />}/>
             <Route path="/profile" element={user? <UserProfile /> : <Navigate to="/login" />}/>
-            <Route path='/profile/edit' element ={ <EditProfile />} />
+            <Route path='/profile/edit' element={user? <EditProfile /> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </BrowserRouter>

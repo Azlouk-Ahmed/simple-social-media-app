@@ -93,7 +93,7 @@ const handleClick = async () => {
         )}
       </pre>)}
       {currentUser && (
-        <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
+        <span className="material-symbols-outlined delete-button" onClick={handleClick}>delete</span>
       )}
     </div>
   )

@@ -14,28 +14,30 @@ function UserProfile() {
             <div className="current-user-info">
             <div className="current-user-images">
                 <div className="cover">
-                  <img src={(!user.image)? "/img/default.png" : `/img/${user.img}`} alt="" />
+                  <img src={(!user.user.cover)? "/img/default.png" : `/img/${user.user.cover}`} alt="" />
                 </div>
                 <div className="current-user">
                   <div className="current-profile-image">
-                      <img src={(!user.image)? "/img/default.png" : `/img/${user.img}`} alt="" />
+                      <img src={(!user.user.img)? "/img/default.png" : `/img/${user.user.img}`} alt="" />
                   </div>
                   <div className="current-user-data">
                     <span className='current-user-name'>{user.user.name} - {user.user.surname} • <Link to="edit"><AiOutlineSetting /> edit profile</Link></span>
-                    <span>{user.user.followers.length} followers • joined {formatDistanceToNow(new Date(user.user.createdAt), {
+                    <span>{user.user.followers.length} followers 
+                    {`${(user.user.createdAt) ? `• joined ${formatDistanceToNow(new Date(user.user.createdAt), {
                           addSuffix: true,
-                        })}</span>
-                    <span>lives in {user.country}</span>
-                    <span>studies at {user.education}</span>
+                        })}` : ""}`}
+                    </span>
+                    <span>lives in <b> {user.user.country}</b> </span>
+                    <span>studies at <b> {user.user.education}</b></span>
                   </div>
                 </div>
             </div>
         </div>
         <div className="bio">
           <span>
-            be the change you wanted to see in the world
+            {`${user.user.bio ? user.user.bio : "this user is currently has no bio"}`}
           </span>
-          <div className="author">~ arnold smith</div>
+          <div className="author">~ {user.user.name}</div>
         </div>
          <Currentuserposts />
           </div>) : (<div>loading</div>)}

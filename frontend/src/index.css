@@ -71,7 +71,7 @@ header a {
 .workout-details {
   background: #fff;
   border-radius: 4px;
-  margin: 20px auto;
+  margin: 20px 0;
   padding: 20px 20px 40px;
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
@@ -208,7 +208,7 @@ nav button,.secondary-btn {
 
 /* auth forms */
 form.signup, form.login {
-  max-width: 400px;
+  width: 400px;
   margin: 40px auto;
   padding: 20px;
   background: #fff;
@@ -278,15 +278,17 @@ form.signup, form.login {
   width: -moz-fit-content;
   width: fit-content;
   margin: 0 auto;
-  /* padding: 1rem 4rem; */
+  padding: 0rem 2rem;
   color: white;
   font-size: 2rem;
   border: 2px solid var(--primary);
   border-radius: 7px;
   cursor: pointer;
   position: relative;
+  margin: 2rem auto;
   display: flex;
   align-items: center;
+  height: 4rem;
 
 }
 
@@ -409,19 +411,22 @@ form.signup, form.login {
 }
 
 .user-profile {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
   padding: 0 6rem;
-  align-items: center;
 }
 
-.user-profile >div {
+.userprofile > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+}
+
+.user-profile> div {
   width: 80%;
   height: 74vh;
 }
 
-.workout-details span {
+.workout-details .delete-button {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -524,12 +529,39 @@ form.signup, form.login {
   align-items: center;
   justify-content: center;
   min-height: 7rem;
+  max-height: 7rem !important;
+  margin: 2rem 0;
 }
 
 .bio .author {
   bottom: 0;
   right: 12rem;
   position: absolute;
+}
+
+.df {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit {
+  width: 100vh !important;
+  background: #000;
+}
+
+.edit > div {
+  width: 300px;
+}
+
+.curent-user-posts {
+  padding: 4rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.curent-user-posts h4 {
+  color: var(--primary);
+  
 }
 
 
