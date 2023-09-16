@@ -4,6 +4,9 @@ import { IoMdAdd } from "react-icons/io";
 import { CiImageOn } from "react-icons/ci";
 import { useAuthContext } from '../hooks/useAuthContext';
 import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
+import UserProfile from './UserProfile';
+import Home from './Home';
 
 function EditProfile() {
     const { user: authenticatedUser, dispatch } = useAuthContext();    
@@ -15,9 +18,10 @@ function EditProfile() {
     const [imagePath, setImagePath] = useState(user.img || "");
     const [education, setEducation] = useState(user.education || "");
     const [country, setCountry] = useState(user.country || "");
-
+    const navigate = useNavigate();
+    
     console.log(user);
-
+    
     const submitEdit = async (e) => {
         e.preventDefault();
       try {
@@ -48,6 +52,8 @@ function EditProfile() {
           console.log("User data updated:", response.data);
           dispatch({type : "EDIT_USER", payload: response.data})
           localStorage.setItem('user',JSON.stringify({user : {...response.data},token: authenticatedUser.token}) );
+          navigate('/profile');
+        
         } else {
           // Handle other status codes or errors as needed
           console.error("Failed to update user data:", response.statusText);

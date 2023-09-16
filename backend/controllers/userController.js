@@ -109,4 +109,13 @@ const updateCurrentUser = async (req, res) => {
     return res.status(200).json(currentUser);
 }
 
-module.exports = {updateCurrentUser, loginUser, signupUser, getAllUsers, followUser, userPosts, getFollowers};
+//delete user account
+
+const deleteUser = async (req, res) => {
+    const userId = req.user._id;
+    console.log(userId);
+    const user = await User.findByIdAndDelete(userId);
+    return res.status(200).json({"mssg" : "user deleted succefully ! "})
+}
+
+module.exports = {updateCurrentUser, loginUser, signupUser, getAllUsers, followUser, userPosts, getFollowers, deleteUser};

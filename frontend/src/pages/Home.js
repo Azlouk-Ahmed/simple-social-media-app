@@ -23,6 +23,7 @@ const Home = () => {
 
       if (response.ok) {
         dispatch({type: 'SET_WORKOUTS', payload: json});
+        console.log(workouts);
       }
     };
 
@@ -31,6 +32,7 @@ const Home = () => {
     }
   }, [dispatch, user]);
 
+
   return (
     <div className="home">
       <div>
@@ -38,15 +40,16 @@ const Home = () => {
       <Users />
 
       </div>
-      <div className="workouts">
-        {workouts ? (
+      {(workouts) && (<div className="workouts">
+        {(workouts != null) ? (
           workouts.map(workout => (
             <WorkoutDetails workout={workout} key={workout._id} />
+            //<div> hello </div>
           ))
         ) : (
           <Loading />
         )}
-      </div>
+      </div>)}
       <WorkoutForm />
     </div>
   );

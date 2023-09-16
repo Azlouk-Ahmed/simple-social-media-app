@@ -4,9 +4,26 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { Link } from 'react-router-dom';
 import { AiOutlineSetting } from 'react-icons/ai';
+import axios from 'axios';
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 
 function UserProfile() {
   const { user } = useAuthContext();
+  const {dispatch} = useAuthContext();
+  const {dispatch : workoutsDispatch} = useWorkoutsContext();
+  const deleteAccount = async (e) => {
+    e.preventDefault();
+    axios.delete("http://localhost:4000/api/user/delete",{
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }).then(response => {
+      localStorage.removeItem("user");
+      dispatch({type: 'LOGOUT'})
+      workoutsDispatch({type: 'LOGOUT'})
+      
+    }).catch(error => console.log(error))
+  }
   return (
     <div className='userprofile'>
          {(user )? 
@@ -29,6 +46,13 @@ function UserProfile() {
                     </span>
                     <span>lives in <b> {user.user.country}</b> </span>
                     <span>studies at <b> {user.user.education}</b></span>
+                  </div>
+                  <div>
+                    <form action="" onSubmit={deleteAccount}>
+                      <button className='restricted'>
+                        delete account 
+                      </button>
+                    </form>
                   </div>
                 </div>
             </div>

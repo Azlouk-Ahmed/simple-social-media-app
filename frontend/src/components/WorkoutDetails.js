@@ -25,9 +25,10 @@ const WorkoutDetails = ({ workout }) => {
       setloading(null);
     }
   };
+  console.log("workout ",workout);
 
   return (
-    <div className="workout-details">
+    workout.user[0] && (<div className="workout-details">
       <div className="user-info">
         <div className="user-info-wrapper">
           <img
@@ -76,7 +77,7 @@ const WorkoutDetails = ({ workout }) => {
           </>
         )}
       </pre>
-    </div>
+    </div>)
   );
 };
 

@@ -86,7 +86,7 @@ const WorkoutForm = () => {
         {loading ? (
             <Loading />
         ) : (
-          <button>Add Workout</button>
+          <button>Add Post</button>
         )}
       {error && <div className="error">{error}</div>}
     </form>
