@@ -566,6 +566,7 @@ form.signup, form.login {
 }
 
 .restricted {
+  color: white;
   background: red;
   cursor: no-drop;
 }
